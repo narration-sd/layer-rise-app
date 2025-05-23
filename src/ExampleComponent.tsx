@@ -1,11 +1,47 @@
 import {type CurrentUser, useCurrentUser} from '@sanity/sdk-react'
-import {Avatar, Card, Container, Flex, Heading, Stack, Text} from '@sanity/ui'
+import { useState, useCallback } from 'react'
+import {Avatar, Card, Container, Flex, Heading,
+  Inline, Radio, Stack, Text} from '@sanity/ui'
 
 export function ExampleComponent() {
   const user: CurrentUser | null = useCurrentUser()
 
+  const [value, setValue] = useState('a')
+
+  const handleChange = useCallback((event) => {
+    setValue(event.currentTarget.value)
+  }, [])
+
   return (
     <Container width={1}>
+      <Card padding={4} style={{textAlign: 'center'}}>
+        <Inline space={3}>
+          <label>
+            <Radio
+              checked={value === 'a'}
+              name="foo"
+              onChange={handleChange}
+              value="a"
+            /> Aardvark
+          </label>
+          <label>
+            <Radio
+              checked={value === 'b'}
+              name="foo"
+              onChange={handleChange}
+              value="b"
+            /> Bear
+          </label>
+          <label>
+            <Radio
+              checked={value === 'c'}
+              name="foo"
+              onChange={handleChange}
+              value="c"
+            /> Camel
+          </label>
+        </Inline>
+      </Card>
       <Card padding={5} shadow={3} radius={3} marginY={5}>
         <Flex align="center" direction="column" gap={5} marginY={4}>
           <Avatar size={3} src={user?.profileImage} />
