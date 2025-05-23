@@ -12,17 +12,21 @@ type FeedbackPreviewData = {
   originalStatus: string
 }
 
-export function FeedbackPreview(props: DocumentHandle) {
+export function PostPreview(props: DocumentHandle) {
   const previewRef = useRef<HTMLDivElement>(null)
   const {data, isPending} = useDocumentProjection<FeedbackPreviewData>({
     ...props,
     ref: previewRef,
     projection: `{
       _createdAt,
-      content,
-      author,
-      email,
-      "originalStatus": status
+      title,
+      'authorName': author->name,
+      // category,
+      body,
+      // content,
+      // author,
+      // email,
+      // "originalStatus": status
     }`,
   })
 
@@ -31,18 +35,20 @@ export function FeedbackPreview(props: DocumentHandle) {
   return (
     <Stack ref={previewRef} space={3}>
       <Text size={2} weight="semibold" textOverflow="ellipsis">
-        {showPlaceholder ? '...' : data.author}
+        {showPlaceholder ? '...' : data.authorName}
       </Text>
       <Text muted size={1} textOverflow="ellipsis">
-        {showPlaceholder ? '...' : data.email + ' | ' + data._createdAt.split('T')[0]}
+        {/*{showPlaceholder ? '...' : data.title + ' | ' + data._createdAt.split('T')[0]}*/}
+        {showPlaceholder ? '...' : data.title + ' | ' + data._createdAt}
       </Text>
       <Text size={2} textOverflow="ellipsis">
-        {showPlaceholder ? '...' : data.content}
+        {showPlaceholder ? '...' : JSON.stringify(data.body)}
       </Text>
-      <Box>
-        StatusBadge
-        {/*<StatusBadge status={data.originalStatus} fontSize={1} />*/}
-      </Box>
+      {/*<Box>*/}
+      {/*  /!*StatusBadge*!/*/}
+      {/*  {showPlaceholder ? '...' : JSON.stringify(data.originalStatus)}*/}
+      {/*  /!*<StatusBadge status={data.originalStatus} fontSize={1} />*!/*/}
+      {/*</Box>*/}
     </Stack>
   )
 }
