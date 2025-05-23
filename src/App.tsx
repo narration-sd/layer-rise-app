@@ -10,8 +10,8 @@ function App() {
   // apps can access many different projects or other sources of data
   const sanityConfigs: SanityConfig[] = [
     {
-      projectId: '',
-      dataset: '',
+      projectId: process.env.SANITY_STUDIO_PROJECT_ID,
+      dataset: 'wut',
     }
   ]
 
@@ -27,6 +27,8 @@ function App() {
     <ThemeProvider theme={theme}>
       <SanityApp config={sanityConfigs} fallback={<Loading />}>
         {/* add your own components here! */}
+        <h2>projectId: { sanityConfigs[0].projectId}</h2>
+        <h2>dataset: { sanityConfigs[0].dataset}</h2>
         <ExampleComponent />
       </SanityApp>
     </ThemeProvider>
