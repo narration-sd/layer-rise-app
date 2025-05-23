@@ -10,7 +10,9 @@ type FeedbackListProps = {
 
 export function PostList({selectedFeedback, setSelectedFeedback}: FeedbackListProps) {
   const {data, hasMore, loadMore} = useDocuments({
-    filter: `_type == "post"`,
+    filter: `_type == "post" `,
+    // filter: `_type == "post"  && dateTime(_createdAt) >= dateTime(now()) - 60 * 60 * 24 * 90`,
+    orderings: [{ field: '_createdAt', direction: 'desc' }],
   })
 
   return (
