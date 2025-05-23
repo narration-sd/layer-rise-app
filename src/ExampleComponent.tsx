@@ -1,7 +1,8 @@
 import {type CurrentUser, useCurrentUser} from '@sanity/sdk-react'
 import { useState, useCallback } from 'react'
 import {Avatar, Card, Container, Flex, Heading,
-  Inline, Radio, Stack, Text} from '@sanity/ui'
+  Inline, Radio, Button, Stack, Text} from '@sanity/ui'
+import { PublishIcon } from '@sanity/icons'
 
 export function ExampleComponent() {
   const user: CurrentUser | null = useCurrentUser()
@@ -40,6 +41,28 @@ export function ExampleComponent() {
               value="c"
             /> Camel
           </label>
+        </Inline>
+      </Card>
+      <Card padding={4} style={{textAlign: 'center'}}>
+        <Inline space={[3, 3, 4]}>
+          <Button
+            fontSize={[2, 2, 3]}
+            icon={PublishIcon}
+            padding={[3, 3, 4]}
+            radius='full'
+            text="Translate"
+            tone="primary"
+            mode = {value === 'c' ? 'default' : 'ghost'}
+          />
+          <Button
+            fontSize={[2, 2, 3]}
+            // iconRight={CancelIcon}
+            padding={[3, 3, 4]}
+            radius="full"
+            text="Cancel"
+            tone="default"
+            type='reset'
+          />
         </Inline>
       </Card>
       <Card padding={5} shadow={3} radius={3} marginY={5}>
