@@ -1,12 +1,13 @@
 import {type CurrentUser, useCurrentUser} from '@sanity/sdk-react'
-import { useState, useCallback, ChangeEvent, useRef } from 'react'
+import { useState, useCallback, ChangeEvent, useEffect, useRef } from 'react'
 import { Card, Container, Grid, /*Flex,*/ Heading,
   Inline, Radio, Button, Stack, /*Text*/} from '@sanity/ui'
 import { PublishIcon } from '@sanity/icons'
-import { translateAction } from '../sanity/actions/translateAction'
-import {DocumentHandle, useDocumentProjection} from '@sanity/sdk-react'
+import { translateAgentAction } from '../sanity/actions/translateAction'
+// import {DocumentHandle, useDocumentProjection} from '@sanity/sdk-react'
 
 interface TranslateProps {
+  docId: string,
   rwToken: string | undefined
 }
 
@@ -24,40 +25,72 @@ const langOptions:TranslateChoice[] = [
   {id: "en-US", title: "English"},
   {id: "fr-Fr", title: "Français"},
   {id: "de-DE", title: "Deutsch"},
-  {id: "it-IT", title: 'Italiano'}
+  {id: "it-IT", title: 'Italiano'},
+  {id: "es-ES", title: 'Español'},
+  {id: "ko-KR", title: '한국어'},
 ];
+
+const findOption = (id:string | unknown) : TranslateChoice  => (
+  langOptions.find((choice)=> choice.id === id) || {id: '', title: 'unknown'}
+)
 
 export function Translate (props: TranslateProps) {
   const user: CurrentUser | null = useCurrentUser()
 
-  const [from, setFrom] = useState(langOptions[0].id)
-  const [to, setTo] = useState(langOptions[0].id)
+  const [from, setFrom] = useState<TranslateChoice>(langOptions[0])
+  const [to, setTo] = useState<TranslateChoice>(langOptions[0])
+  const [translateMsg, setTranslateMsg] = useState('Translate')
+
+  const fromRef = useRef (from)
+  const toRef = useRef (to)
+
+  useEffect (() => {
+    fromRef.current = from
+    toRef.current = to
+    console.log('set refs from: ' + fromRef.current.id + ', to: ' + toRef.current.id)
+  }, [from, to])
 
   const handleChange = useCallback((e:ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     switch (name) {
       case 'from':
-        setFrom(value)
+        setFrom(findOption(value))
         break
       case 'to':
-        setTo(value)
+        setTo(findOption(value))
         break
     }
-  }/*, [to]*/)
+  }, [])
 
-  const handleTranslateClick = useCallback (() => {
-    if (from && to && from !== to) {
-      alert ('Translating...')
-      // call translate agent
+  const handleTranslateClick = useCallback (async () => {
+    console.log('docId: ' + props.docId + ', from: ' + fromRef.current.id + ', to: ' + toRef.current.id)
+
+    if (!props.docId) {
+      alert ('Please choose a Document!')
+      return
     }
-  }, [ from ])
+
+    if (/*from.id && to.id &&*/ fromRef.current.id !== toRef.current.id) {
+      // alert ('Translating...docId: ' + props.docId)
+      // call translate agent
+      setTranslateMsg('TRANSLATING!')
+      const transResult
+        = await translateAgentAction(props.docId, fromRef.current, toRef.current)
+      setTranslateMsg('Translate')
+
+      console.log('Translation completed: ' +
+        fromRef.current.title + ' to ' +
+        toRef.current.title +'!' // );
+        + ' -- transResult: ' + JSON.stringify(transResult));
+    }
+  }, [props.docId])
 
 
   return (
     <Container width={1}>
       <Stack>
         <Card padding={4} style={{textAlign: 'center'}}>
-          <Heading as="h2">Translate your {user?.name} Document</Heading>
+          <Heading as="h2">{translateMsg} your {user?.name} Document from { from.id } to { to.id }</Heading>
         </Card>
         <Card padding={4} style={{textAlign: 'center'}}>
           <Grid columns={[2, 3, 4]} gap={3}>
@@ -65,7 +98,7 @@ export function Translate (props: TranslateProps) {
             { langOptions.map ((option:TranslateChoice) => (
               <label>
                 <Radio
-                  checked={from === option.id}
+                  checked={from.id === option.id}
                   name="from"
                   onChange={handleChange}
                   value= {option.id}
@@ -79,7 +112,7 @@ export function Translate (props: TranslateProps) {
             { langOptions.map ((option:TranslateChoice) => (
               <label>
                 <Radio
-                  checked={to === option.id}
+                  checked={to.id === option.id}
                   name="to"
                   onChange={handleChange}
                   value= {option.id}
@@ -87,19 +120,8 @@ export function Translate (props: TranslateProps) {
             ))}
           </Grid>
         </Card>
-        <Heading>from: {from} to: {to}</Heading>
         <Card padding={4} style={{textAlign: 'center'}}>
           <Inline space={[3, 3, 4]}>
-            <Button
-              fontSize={[2, 2, 3]}
-              icon={PublishIcon}
-              padding={[3, 3, 4]}
-              radius='full'
-              text="Translate"
-              tone="primary"
-              mode = {(from && to) && from !== to ? 'default' : 'ghost'}
-              onClick={handleTranslateClick}
-            />
             <Button
               fontSize={[2, 2, 3]}
               // iconRight={CancelIcon}
@@ -108,6 +130,16 @@ export function Translate (props: TranslateProps) {
               text="Cancel"
               tone="default"
               type='reset'
+            />
+            <Button
+              fontSize={[2, 2, 3]}
+              iconRight={PublishIcon}
+              padding={[3, 3, 4]}
+              radius='full'
+              text="Translate"
+              tone="primary"
+              mode = {(from && to) && from.id !== to.id ? 'default' : 'ghost'}
+              onClick={handleTranslateClick}
             />
           </Inline>
         </Card>

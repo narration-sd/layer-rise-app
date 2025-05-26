@@ -1,4 +1,4 @@
-import {Suspense, useState, useEffect} from 'react'
+import {Suspense, useState, SetStateAction, Dispatch} from 'react'
 import {DocumentHandle, useDocuments} from '@sanity/sdk-react'
 import {Card, Grid} from '@sanity/ui'
 import {styled} from 'styled-components'
@@ -10,15 +10,31 @@ const ScreenHeightCard = styled(Card)`
   overflow: scroll;
 `
 
-export function Post() {
+class setStateAction<T> {
+}
+
+interface PostProps {
+  setDocId: Dispatch<SetStateAction<string>>
+}
+
+export function Post(props:PostProps) {
   const [selectedFeedback, setSelectedFeedback] = useState<DocumentHandle | null>(null)
+
+  const setFeedback = (feedback: SetStateAction<DocumentHandle<string, string, string> | null>):void => {
+    setSelectedFeedback(feedback)
+    console.log ('doc: ' + JSON.stringify(feedback))
+    // @ts-expect-error
+    props.setDocId(feedback?.documentId || 'unset')
+    // props.setDocId(JSON.stringify(feedback))
+  }
 
   return (
     <Grid columns={5}>
       <ScreenHeightCard columnStart={1} columnEnd={3} style={{maxHeight: '100vh', overflow: 'scroll'}}>
         <Suspense>
           <PostList
-            setSelectedFeedback={setSelectedFeedback}
+            // setSelectedFeedback={setSelectedFeedback}
+            setSelectedFeedback={setFeedback}
             selectedFeedback={selectedFeedback}
           />
         </Suspense>

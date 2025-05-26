@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import {type SanityConfig} from '@sanity/sdk'
 import {SanityApp} from '@sanity/sdk-react'
 import {Flex, Spinner, ThemeProvider} from '@sanity/ui'
@@ -14,6 +15,9 @@ interface MyConfig extends SanityConfig {
 
 function App() {
   // apps can access many different projects or other sources of data
+
+  const [ currentDocId, setCurrentDocId ] = useState ('')
+
   const sanityConfigs: MyConfig[] = [
     {
       projectId: process.env.SANITY_APP_PROJECT_ID,
@@ -36,8 +40,8 @@ function App() {
         {/* add your own components here! */}
         <h2>projectId: { sanityConfigs[0].projectId}</h2>
         <h2>dataset: { sanityConfigs[0].dataset}</h2>
-        <Translate rwToken={sanityConfigs[0].rwToken}/>
-        <Post />
+        <Translate docId={currentDocId} rwToken={sanityConfigs[0].rwToken}/>
+        <Post setDocId={setCurrentDocId}/>
         <ExampleComponent />
       </SanityApp>
     </ThemeProvider>

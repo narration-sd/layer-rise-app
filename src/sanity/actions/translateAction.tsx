@@ -1,9 +1,10 @@
 import { client } from "../lib/client";
+import type { SanityClient } from 'sanity'
 import { rwToken } from "../env"
 import React, { useState } from 'react';
 import { EarthGlobeIcon } from '@sanity/icons';
 
-const rwClient = client.withConfig({
+const rwClient:SanityClient = client.withConfig({
   token: rwToken,
 });
 
@@ -17,15 +18,14 @@ interface SelectedLanguages {
   to: TranslateChoice
 }
 
-export const translateAction= async (
-    docId: string,
-    from:TranslateChoice,
-    to: TranslateChoice,
-    client,
-    rwToken: string | undefined) => {
+export const translateAgentAction= async (
+  docId: string,
+  from: TranslateChoice,
+  to: TranslateChoice) => {
 
-  const TranslationClient = rwClient(client)
-  return translationClient.agent.action.translate({
+  console.log('Translating: ' + from.id + ' to: ' + to.id)
+
+  return rwClient.agent.action.translate({
     // Replace with your schema ID
     schemaId: "_.schemas.default",
     // Tell the client the ID of the document to use as the source.
@@ -48,43 +48,4 @@ export const translateAction= async (
       stopWords: 'heart, rhythm, disorder'
     }
   });
-}
-
-export const AgentAction = (props)=> {
-
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  // const { patch } = useDocumentOperation(id, type);
-
-  return {
-    label: 'Translate Language',
-    icon: EarthGlobeIcon,
-    onHandle: () => setIsDialogOpen(true),
-    dialog: isDialogOpen && {
-      type: 'custom',
-      onClose: () => setIsDialogOpen(false),
-      component: (
-        <TitleChoiceDialog
-          onClose={() => setIsDialogOpen(false)}
-          onConfirm={ async (selectedLanguages:SelectedLanguages) => {
-            if (selectedLanguages) {
-              const transResult = await translateAction(
-                props.id,
-                selectedLanguages.from,
-                selectedLanguages.to,
-                rwClient);
-              window.alert('Translation completed: ' +
-                selectedLanguages.from.title + ' to ' +
-                selectedLanguages.to.title +'!');
-                // + ' -- transResult: ' + JSON.stringify(transResult));
-
-              // *todo* insert likely here a check on the the result, then a patch try to
-              //  fix slug or delete-inform to retry the translation, due to Content Lake race
-            }
-
-            setIsDialogOpen(false);
-          }}
-        />
-      ),
-    },
-  };
 }
