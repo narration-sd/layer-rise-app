@@ -90,7 +90,7 @@ export function Translate (props: TranslateProps) {
     <Container width={1}>
       <Stack>
         <Card padding={4} style={{textAlign: 'center'}}>
-          <Heading as="h2">{translateMsg} your {user?.name} Document from { from.id } to { to.id }</Heading>
+          <Heading as="h2">{translateMsg} from { from.id } to { to.id }</Heading>
         </Card>
         <Card padding={4} style={{textAlign: 'center'}}>
           <Grid columns={[2, 3, 4]} gap={3}>

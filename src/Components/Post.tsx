@@ -29,7 +29,7 @@ export function Post(props:PostProps) {
   }
 
   return (
-    <Grid columns={5}>
+    <Grid columns={1} style={{ width: '100%'}}>
       <ScreenHeightCard columnStart={1} columnEnd={3} style={{maxHeight: '100vh', overflow: 'scroll'}}>
         <Suspense>
           <PostList

@@ -3,6 +3,7 @@ import {Box, Stack, Text} from '@sanity/ui'
 
 // import {StatusBadge} from './StatusBadge'
 import {useRef} from 'react'
+import { PortableText } from '@portabletext/react';
 
 type FeedbackPreviewData = {
   _createdAt: string
@@ -32,18 +33,34 @@ export function PostPreview(props: DocumentHandle) {
 
   const showPlaceholder = isPending && !data
 
+
+  const OneLinePortableText = ({ value }) => (
+    <div style={{
+      width: '100%',
+      minWidth: 0,
+      WebkitLineClamp: 2,
+      whiteSpace: 'nowrap',
+      // overflow: 'hidden',
+      textOverflow: 'ellipsis',
+    }}>
+      <PortableText value={value} />
+    </div>
+  );
+
+
   return (
-    <Stack ref={previewRef} space={3}>
-      <Text size={2} weight="semibold" textOverflow="ellipsis">
+    <Stack ref={previewRef} space={3} style={{ width: '100%', minWidth:0 }}>
+      <Text size={2} weight="semibold" textOverflow="ellipsis"  >
         {showPlaceholder ? '...' : data.authorName}
       </Text>
       <Text muted size={1} textOverflow="ellipsis">
         {/*{showPlaceholder ? '...' : data.title + ' | ' + data._createdAt.split('T')[0]}*/}
         {showPlaceholder ? '...' : data.title + ' | ' + data._createdAt}
       </Text>
-      <Text size={2} textOverflow="ellipsis">
-        {showPlaceholder ? '...' : JSON.stringify(data.body)}
-      </Text>
+      <OneLinePortableText value={data.body[0]} />
+      {/*<Text size={2} textOverflow="ellipsis">*/}
+      {/*  {showPlaceholder ? '...' : JSON.stringify(data.body)}*/}
+      {/*</Text>*/}
       {/*<Box>*/}
       {/*  /!*StatusBadge*!/*/}
       {/*  {showPlaceholder ? '...' : JSON.stringify(data.originalStatus)}*/}

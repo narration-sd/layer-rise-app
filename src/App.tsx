@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import {type SanityConfig} from '@sanity/sdk'
 import {SanityApp} from '@sanity/sdk-react'
-import {Flex, Spinner, ThemeProvider} from '@sanity/ui'
+import {Flex, Grid, Spinner, ThemeProvider} from '@sanity/ui'
 import {buildTheme} from '@sanity/ui/theme'
 import {ExampleComponent} from './Components/ExampleComponent'
 import {Translate} from './Components/Translate'
@@ -38,10 +38,12 @@ function App() {
     <ThemeProvider theme={theme}>
       <SanityApp config={sanityConfigs} fallback={<Loading />}>
         {/* add your own components here! */}
-        <h2>projectId: { sanityConfigs[0].projectId}</h2>
-        <h2>dataset: { sanityConfigs[0].dataset}</h2>
-        <Translate docId={currentDocId} rwToken={sanityConfigs[0].rwToken}/>
-        <Post setDocId={setCurrentDocId}/>
+        {/*<h2>projectId: { sanityConfigs[0].projectId}</h2>*/}
+        {/*<h2>dataset: { sanityConfigs[0].dataset}</h2>*/}
+        <Grid columns={[1, 2]} gap={3}>
+          <Post setDocId={setCurrentDocId}/>
+          <Translate docId={currentDocId} rwToken={sanityConfigs[0].rwToken}/>
+        </Grid>
         <ExampleComponent />
       </SanityApp>
     </ThemeProvider>

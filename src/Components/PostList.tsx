@@ -1,5 +1,5 @@
 import {type DocumentHandle, useDocuments} from '@sanity/sdk-react'
-import {Stack, Button} from '@sanity/ui'
+import {Heading, Stack, Box, Button} from '@sanity/ui'
 
 import {PostPreview} from './PostPreview'
 
@@ -16,16 +16,22 @@ export function PostList({selectedFeedback, setSelectedFeedback}: FeedbackListPr
   })
 
   return (
-    <Stack space={2} padding={5}>
+    <Stack space={2} padding={5} style={{ width: '100%' }}>
+      <Heading as='h2'>Choose your Document</Heading>
       {data?.map((feedback) => (
-        <Button
-          key={feedback.documentId}
-          onClick={() => setSelectedFeedback(feedback)}
-          mode={selectedFeedback?.documentId === feedback.documentId ? 'ghost' : 'bleed'}
-          tone={selectedFeedback?.documentId === feedback.documentId ? 'primary' : undefined}
-        >
-          <PostPreview {...feedback} />
-        </Button>
+        <Box style={{ width: '100%', minWidth: 0 }}>
+          <Button
+            key={feedback.documentId}
+            onClick={() => setSelectedFeedback(feedback)}
+            mode={selectedFeedback?.documentId === feedback.documentId ? 'ghost' : 'bleed'}
+            tone={selectedFeedback?.documentId === feedback.documentId ? 'primary' : undefined}
+            width="fill"
+          >
+            <div style={{widths: "90%"}}>
+              <PostPreview {...feedback} />
+            </div>
+          </Button>
+        </Box>
       ))}
       {hasMore && <Button onClick={loadMore} text="Load more" />}
     </Stack>
