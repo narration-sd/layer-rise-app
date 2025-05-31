@@ -1,6 +1,6 @@
 import {Suspense, useState, SetStateAction, Dispatch} from 'react'
 import {DocumentHandle, useDocuments} from '@sanity/sdk-react'
-import {Card, Grid} from '@sanity/ui'
+import {Heading, Card, Grid} from '@sanity/ui'
 import {styled} from 'styled-components'
 
 import {PostList} from './PostList'
@@ -30,6 +30,9 @@ export function Post(props:PostProps) {
 
   return (
     <Grid columns={1} style={{ width: '100%'}}>
+      <Card padding={4} style={{textAlign: 'center'}}>
+        <Heading as='h2'>Choose your Document</Heading>
+      </Card>
       <ScreenHeightCard columnStart={1} columnEnd={3} style={{maxHeight: '100vh', overflow: 'scroll'}}>
         <Suspense>
           <PostList

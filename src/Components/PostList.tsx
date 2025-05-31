@@ -17,7 +17,6 @@ export function PostList({selectedFeedback, setSelectedFeedback}: FeedbackListPr
 
   return (
     <Stack space={2} padding={5} style={{ width: '100%' }}>
-      <Heading as='h2'>Choose your Document</Heading>
       {data?.map((feedback) => (
         <Box style={{ width: '100%', minWidth: 0 }}>
           <Button
