@@ -7,10 +7,10 @@ import { PortableText } from '@portabletext/react';
 
 type PostPreviewData = {
   _createdAt: string
-  content: string
-  author: string
-  email: string
-  originalStatus: string
+  title: string
+  body: [object],
+  authorName: string
+  categoryNames: Array<string>
 }
 
 export function PostPreview(props: DocumentHandle) {
@@ -22,12 +22,8 @@ export function PostPreview(props: DocumentHandle) {
       _createdAt,
       title,
       'authorName': author->name,
-      // category,
+      'categoryNames': categories[]->title,
       body,
-      // content,
-      // author,
-      // email,
-      // "originalStatus": status
     }`,
   })
 
@@ -47,7 +43,6 @@ export function PostPreview(props: DocumentHandle) {
     </div>
   );
 
-
   return (
     <Stack ref={previewRef} space={3} style={{ width: '100%', minWidth:0 }}>
       <Text size={2} weight="semibold" textOverflow="ellipsis"  >
@@ -58,6 +53,9 @@ export function PostPreview(props: DocumentHandle) {
         {showPlaceholder ? '...' : data.title + ' | ' + data._createdAt}
       </Text>
       <OneLinePortableText value={data.body[0]} />
+      <Text size={2} weight="semibold" textOverflow="ellipsis"  >
+        {showPlaceholder ? '...' : data.categoryNames.join(',')}
+      </Text>
       {/*<Text size={2} textOverflow="ellipsis">*/}
       {/*  {showPlaceholder ? '...' : JSON.stringify(data.body)}*/}
       {/*</Text>*/}
