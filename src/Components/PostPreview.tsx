@@ -5,7 +5,7 @@ import {Box, Stack, Text} from '@sanity/ui'
 import {useRef} from 'react'
 import { PortableText } from '@portabletext/react';
 
-type FeedbackPreviewData = {
+type PostPreviewData = {
   _createdAt: string
   content: string
   author: string
@@ -15,7 +15,7 @@ type FeedbackPreviewData = {
 
 export function PostPreview(props: DocumentHandle) {
   const previewRef = useRef<HTMLDivElement>(null)
-  const {data, isPending} = useDocumentProjection<FeedbackPreviewData>({
+  const {data, isPending} = useDocumentProjection<PostPreviewData>({
     ...props,
     ref: previewRef,
     projection: `{

@@ -1,14 +1,14 @@
 import {type DocumentHandle, useDocuments} from '@sanity/sdk-react'
-import {Heading, Stack, Box, Button} from '@sanity/ui'
+import {Stack, Box, Button} from '@sanity/ui'
 
 import {PostPreview} from './PostPreview'
 
-type FeedbackListProps = {
-  selectedFeedback: DocumentHandle | null
-  setSelectedFeedback: (feedback: DocumentHandle) => void
+type PostListProps = {
+  selectedPost: DocumentHandle | null
+  setSelectedPost: (post: DocumentHandle) => void
 }
 
-export function PostList({selectedFeedback, setSelectedFeedback}: FeedbackListProps) {
+export function PostList({selectedPost, setSelectedPost}: PostListProps) {
   const {data, hasMore, loadMore} = useDocuments({
     filter: `_type == "post" `,
     // filter: `_type == "post"  && dateTime(_createdAt) >= dateTime(now()) - 60 * 60 * 24 * 90`,
@@ -17,17 +17,17 @@ export function PostList({selectedFeedback, setSelectedFeedback}: FeedbackListPr
 
   return (
     <Stack space={2} padding={5} style={{ width: '100%' }}>
-      {data?.map((feedback) => (
+      {data?.map((post) => (
         <Box style={{ width: '100%', minWidth: 0 }}>
           <Button
-            key={feedback.documentId}
-            onClick={() => setSelectedFeedback(feedback)}
-            mode={selectedFeedback?.documentId === feedback.documentId ? 'ghost' : 'bleed'}
-            tone={selectedFeedback?.documentId === feedback.documentId ? 'primary' : undefined}
+            key={post.documentId}
+            onClick={() => setSelectedPost(post)}
+            mode={selectedPost?.documentId === post.documentId ? 'ghost' : 'bleed'}
+            tone={selectedPost?.documentId === post.documentId ? 'primary' : undefined}
             width="fill"
           >
             <div style={{widths: "90%"}}>
-              <PostPreview {...feedback} />
+              <PostPreview {...post} />
             </div>
           </Button>
         </Box>
@@ -41,20 +41,20 @@ export function PostList({selectedFeedback, setSelectedFeedback}: FeedbackListPr
 // import {type DocumentHandle, useDocuments} from '@sanity/sdk-react'
 // import {Stack, Button} from '@sanity/ui'
 //
-// type FeedbackListProps = {
-//   selectedFeedback: DocumentHandle | null
-//   setSelectedFeedback: (feedback: DocumentHandle) => void
+// type PostListProps = {
+//   selectedPost: DocumentHandle | null
+//   setSelectedPost: (post: DocumentHandle) => void
 // }
 //
-// export function PostList({selectedFeedback, setSelectedFeedback}: FeedbackListProps) {
+// export function PostList({selectedPost, setSelectedPost}: PostListProps) {
 //   const {data, hasMore, loadMore} = useDocuments({
 //     filter: `_type == "post"`,
 //   })
 //
 //   return (
 //     <Stack space={2} padding={5}>
-//       {data?.map((feedback) => (
-//         <pre key={feedback.documentId}>{JSON.stringify(feedback, null, 2)}</pre>
+//       {data?.map((post) => (
+//         <pre key={post.documentId}>{JSON.stringify(post, null, 2)}</pre>
 //       ))}
 //       {hasMore && <Button onClick={loadMore} text="Load more" />}
 //     </Stack>

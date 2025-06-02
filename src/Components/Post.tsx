@@ -18,14 +18,14 @@ interface PostProps {
 }
 
 export function Post(props:PostProps) {
-  const [selectedFeedback, setSelectedFeedback] = useState<DocumentHandle | null>(null)
+  const [selectedPost, setSelectedPost] = useState<DocumentHandle | null>(null)
 
-  const setFeedback = (feedback: SetStateAction<DocumentHandle<string, string, string> | null>):void => {
-    setSelectedFeedback(feedback)
-    console.log ('doc: ' + JSON.stringify(feedback))
+  const setPost = (post: SetStateAction<DocumentHandle<string, string, string> | null>):void => {
+    setSelectedPost(post)
+    console.log ('doc: ' + JSON.stringify(post))
     // @ts-expect-error
-    props.setDocId(feedback?.documentId || 'unset')
-    // props.setDocId(JSON.stringify(feedback))
+    props.setDocId(post?.documentId || 'unset')
+    // props.setDocId(JSON.stringify(post))
   }
 
   return (
@@ -36,14 +36,14 @@ export function Post(props:PostProps) {
       <ScreenHeightCard columnStart={1} columnEnd={3} style={{maxHeight: '100vh', overflow: 'scroll'}}>
         <Suspense>
           <PostList
-            // setSelectedFeedback={setSelectedFeedback}
-            setSelectedFeedback={setFeedback}
-            selectedFeedback={selectedFeedback}
+            // setSelectedPost={setSelectedPost}
+            setSelectedPost={setPost}
+            selectedPost={selectedPost}
           />
         </Suspense>
       </ScreenHeightCard>
       <ScreenHeightCard borderLeft columnStart={3} columnEnd={6} style={{maxHeight: '100vh', overflow: 'scroll'}}>
-        {/* TODO: Add <FeedbackEdit /> form */}
+        {/* TODO: Add <PostEdit /> form */}
       </ScreenHeightCard>
     </Grid>
   )
