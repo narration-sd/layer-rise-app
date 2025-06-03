@@ -1,10 +1,11 @@
 import {type CurrentUser, useCurrentUser} from '@sanity/sdk-react'
-import { useState, useCallback, ChangeEvent, useEffect, useRef } from 'react'
-import { Card, Container, Grid, /*Flex,*/ Heading,
-  Inline, Radio, Button, Stack, /*Text*/} from '@sanity/ui'
+import { useState, useCallback, ChangeEvent } from 'react'
+import { Card, Container, Grid, Heading,
+  Inline, Radio, Button, Stack} from '@sanity/ui'
+import { atom }from 'nanostores'
+import { useStore } from '@nanostores/react'
 import { PublishIcon } from '@sanity/icons'
 import { translateAgentAction } from '../sanity/actions/translateAction'
-// import {DocumentHandle, useDocumentProjection} from '@sanity/sdk-react'
 
 interface TranslateProps {
   docId: string,
@@ -34,56 +35,44 @@ const findOption = (id:string | unknown) : TranslateChoice  => (
   langOptions.find((choice)=> choice.id === id) || {id: '', title: 'unknown'}
 )
 
+const $from = atom<TranslateChoice>(langOptions[0])
+const $to = atom<TranslateChoice>(langOptions[0])
+
 export function Translate (props: TranslateProps) {
   const user: CurrentUser | null = useCurrentUser()
-
-  const [from, setFrom] = useState<TranslateChoice>(langOptions[0])
-  const [to, setTo] = useState<TranslateChoice>(langOptions[0])
   const [translateMsg, setTranslateMsg] = useState('Translate')
 
-  const fromRef = useRef (from)
-  const toRef = useRef (to)
+  // Get current values from atoms
+  const from = useStore($from)
+  const to = useStore($to)
 
-  useEffect (() => {
-    fromRef.current = from
-    toRef.current = to
-    console.log('set refs from: ' + fromRef.current.id + ', to: ' + toRef.current.id)
-  }, [from, to])
-
-  const handleChange = useCallback((e:ChangeEvent<HTMLInputElement>) => {
+  const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    switch (name) {
-      case 'from':
-        setFrom(findOption(value))
-        break
-      case 'to':
-        setTo(findOption(value))
-        break
-    }
+    const updateAtom = name === 'from' ? $from : $to
+    updateAtom.set(findOption(value))
   }, [])
 
-  const handleTranslateClick = useCallback (async () => {
-    console.log('docId: ' + props.docId + ', from: ' + fromRef.current.id + ', to: ' + toRef.current.id)
+  const handleTranslateClick = useCallback(async () => {
+    // Directly read from atoms instead of refs
+    const currentFrom = $from.get()
+    const currentTo = $to.get()
 
     if (!props.docId) {
-      alert ('Please choose a Document!')
+      alert('Please choose a Document to translate!')
       return
     }
 
-    if (/*from.id && to.id &&*/ fromRef.current.id !== toRef.current.id) {
-      // alert ('Translating...docId: ' + props.docId)
-      // call translate agent
+    if (currentFrom.id !== currentTo.id) {
       setTranslateMsg('TRANSLATING!')
-      const transResult
-        = await translateAgentAction(props.docId, fromRef.current, toRef.current)
+      const transResult = await translateAgentAction(
+        props.docId,
+        currentFrom,
+        currentTo
+      )
       setTranslateMsg('Translate')
-
-      console.log('Translation completed: ' +
-        fromRef.current.title + ' to ' +
-        toRef.current.title +'!' // );
-        + ' -- transResult: ' + JSON.stringify(transResult));
+      console.log('Translation completed', transResult)
     }
-  }, [props.docId])
+  }, [props.docId]) // track when prop changes
 
 
   return (
