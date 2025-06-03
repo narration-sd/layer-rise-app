@@ -25,7 +25,7 @@
   },
   "devDependencies": {
     "@types/react": "^19.1.6",
-    "sanity": "^3.90.0",
+    "sanity": "^3.91.0",
     "typescript": "^5.8.3"
   },
   "volta": {

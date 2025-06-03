@@ -42,7 +42,7 @@ export function Translate (props: TranslateProps) {
   const user: CurrentUser | null = useCurrentUser()
   const [translateMsg, setTranslateMsg] = useState('Translate')
 
-  // Get current values from atoms
+  // Get current values from atoms in integrated React fashion
   const from = useStore($from)
   const to = useStore($to)
 
