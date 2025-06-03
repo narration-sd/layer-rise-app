@@ -1,10 +1,9 @@
 import {type CurrentUser, useCurrentUser} from '@sanity/sdk-react'
 import { useState, useCallback, ChangeEvent, useEffect, useRef } from 'react'
-import { Card, Container, Grid, /*Flex,*/ Heading,
-  Inline, Radio, Button, Stack, /*Text*/} from '@sanity/ui'
+import { Card, Container, Grid, Heading,
+  Inline, Radio, Button, Stack} from '@sanity/ui'
 import { PublishIcon } from '@sanity/icons'
 import { translateAgentAction } from '../sanity/actions/translateAction'
-// import {DocumentHandle, useDocumentProjection} from '@sanity/sdk-react'
 
 interface TranslateProps {
   docId: string,
