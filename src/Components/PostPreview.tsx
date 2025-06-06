@@ -52,9 +52,12 @@ export function PostPreview(props: DocumentHandle) {
         {/*{showPlaceholder ? '...' : data.title + ' | ' + data._createdAt.split('T')[0]}*/}
         {showPlaceholder ? '...' : data.title + ' | ' + data._createdAt}
       </Text>
-      <OneLinePortableText value={data.body[0]} />
+      { data.body?.length > 0
+        ? <OneLinePortableText value={data.body[0]} />
+        : <Text>No body...</Text>
+      }
       <Text size={2} weight="semibold" textOverflow="ellipsis"  >
-        {showPlaceholder ? '...' : data.categoryNames.join(',')}
+        {showPlaceholder ? '...' : data.categoryNames?.join(',')}
       </Text>
       {/*<Text size={2} textOverflow="ellipsis">*/}
       {/*  {showPlaceholder ? '...' : JSON.stringify(data.body)}*/}

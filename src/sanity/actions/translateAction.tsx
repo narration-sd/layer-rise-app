@@ -46,6 +46,15 @@ export const translateAgentAction= async (
       "Don't translate the following words or phrases: $stopWords.",
     styleGuideParams: {
       stopWords: 'heart, rhythm, disorder'
-    }
+    },
+    // experiments here to surround the empty categories problem if possible.
+    // target: {
+    //   // include: ['title','mainImage', 'body','categories']
+    //   exclude: [ 'categories']
+    // },
+    // conditionalPaths: {
+    //   defaultReadOnly: true,
+    //   defaultHidden: true
+    // }
   });
 }

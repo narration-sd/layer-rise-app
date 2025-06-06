@@ -64,13 +64,14 @@ export function Translate (props: TranslateProps) {
 
     if (currentFrom.id !== currentTo.id) {
       setTranslateMsg('TRANSLATING!')
+      console.log('category[0]')
       const transResult = await translateAgentAction(
-        props.docId,
-        currentFrom,
-        currentTo
+          props.docId,
+          currentFrom,
+          currentTo,
       )
       setTranslateMsg('Translate')
-      console.log('Translation completed', transResult)
+      console.log('Translation completed', JSON.stringify(transResult, null, 2))
     }
   }, [props.docId]) // track when prop changes
 
@@ -91,6 +92,7 @@ export function Translate (props: TranslateProps) {
                   name="from"
                   onChange={handleChange}
                   value= {option.id}
+                  key= {option.id}
                 /> {option.title} </label>
             ))}
           </Grid>
@@ -105,6 +107,7 @@ export function Translate (props: TranslateProps) {
                   name="to"
                   onChange={handleChange}
                   value= {option.id}
+                  key= {option.id}
                 /> {option.title} </label>
             ))}
           </Grid>
