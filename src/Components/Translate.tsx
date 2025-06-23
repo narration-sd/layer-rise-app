@@ -55,7 +55,7 @@ export function Translate (props: TranslateProps) {
     }
   }, [])
 
-  const handleTranslateClick = useCallback (async () => {
+  const handleTranslateClick = async () => {
     console.log('docId: ' + props.docId + ', from: ' + fromLanguage.id + ', to: ' + toLanguage.id)
 
     if (!props.docId) {
@@ -74,7 +74,7 @@ export function Translate (props: TranslateProps) {
       alert ('Attempted translating from ' + fromLanguage.id + 'to ' + toLanguage.id)
       // console.log('Translation completed', JSON.stringify(transResult, null, 2))
     }
-  }, [props.docId]) // track when prop changes
+  }
 
 
   return (
