@@ -65,10 +65,16 @@ export function Translate (props: TranslateProps) {
     if (currentFrom.id !== currentTo.id) {
       setTranslateMsg('TRANSLATING!')
       console.log('category[0]')
+      const target = {
+        // path: ['title', 'body', 'author', 'mainIMage', 'categories', 'relatedPosts']
+        // include: ['title']
+        exclude: ['body']
+      }
       const transResult = await translateAgentAction(
           props.docId,
           currentFrom,
           currentTo,
+          target
       )
       setTranslateMsg('Translate')
       console.log('Translation completed', JSON.stringify(transResult, null, 2))

@@ -21,11 +21,11 @@
     "nanostores": "^1.0.1",
     "react": "^19",
     "react-dom": "^19",
-    "styled-components": "^6.1.18"
+    "styled-components": "^6.1.19"
   },
   "devDependencies": {
-    "@types/react": "^19.1.6",
-    "sanity": "^3.91.0",
+    "@types/react": "^19.1.8",
+    "sanity": "^3.93.0",
     "typescript": "^5.8.3"
   },
   "volta": {

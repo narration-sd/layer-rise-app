@@ -14,18 +14,18 @@ type PostPreviewData = {
 }
 
 export function PostPreview(props: DocumentHandle) {
-  const previewRef = useRef<HTMLDivElement>(null)
-  const {data, isPending} = useDocumentProjection<PostPreviewData>({
-    ...props,
-    ref: previewRef,
-    projection: `{
-      _createdAt,
-      title,
-      'authorName': author->name,
-      'categoryNames': categories[]->title,
-      body,
-    }`,
-  })
+const previewRef = useRef<HTMLDivElement>(null)
+const {data, isPending} = useDocumentProjection<PostPreviewData>({
+  ...props,
+  ref: previewRef,
+  projection: `{
+    _createdAt,
+    title,
+    'authorName': author->name,
+    'categoryNames': categories[]->title,
+    body,
+  }`,
+})
 
   const showPlaceholder = isPending && !data
 
@@ -45,10 +45,10 @@ export function PostPreview(props: DocumentHandle) {
 
   return (
     <Stack ref={previewRef} space={3} style={{ width: '100%', minWidth:0 }}>
-      <Text size={2} weight="semibold" textOverflow="ellipsis"  >
+      <Text muted size={2} weight="semibold" textOverflow="ellipsis"  >
         {showPlaceholder ? '...' : data.authorName}
       </Text>
-      <Text muted size={1} textOverflow="ellipsis">
+      <Text  size={3} weight="semibold" textOverflow="ellipsis">
         {/*{showPlaceholder ? '...' : data.title + ' | ' + data._createdAt.split('T')[0]}*/}
         {showPlaceholder ? '...' : data.title + ' | ' + data._createdAt}
       </Text>
