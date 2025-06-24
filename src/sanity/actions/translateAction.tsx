@@ -16,12 +16,14 @@ interface TranslateChoice {
 interface SelectedLanguages {
   from: TranslateChoice
   to: TranslateChoice
+  target: object
 }
 
 export const translateAgentAction= async (
   docId: string,
   from: TranslateChoice,
-  to: TranslateChoice) => {
+  to: TranslateChoice,
+  target:object = {}) => {
 
   console.log('Translating: ' + from.id + ' to: ' + to.id)
 
@@ -37,7 +39,8 @@ export const translateAgentAction= async (
     fromLanguage: from, //{id: "en-US", title: "English"},
     // toLanguage: {id: "de-DE", title: "German"},
     toLanguage: to, // {id: "it-IT", title: "Italian"},
-
+    // *todo* jury out on what intent, if can condition translation?
+    target: target,
     // parameterized styleGuide used to tune the translation.
     styleGuide:
       "Don't translate product names, company names, " +
@@ -48,13 +51,16 @@ export const translateAgentAction= async (
       stopWords: 'heart, rhythm, disorder'
     },
     // experiments here to surround the empty categories problem if possible.
-    // target: {
-    //   // include: ['title','mainImage', 'body','categories']
-    //   exclude: [ 'categories']
-    // },
     // conditionalPaths: {
     //   defaultReadOnly: true,
-    //   defaultHidden: true
+    //   defaultHidden: true,
+    //   paths: [
+    //     {
+    //       path: ["body"],
+    //       readOnly: true,
+    //       hidden: true
+    //     }
+    //   ]
     // }
   });
 }

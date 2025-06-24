@@ -68,7 +68,7 @@ export function Translate (props: TranslateProps) {
       const target = {
         // path: ['title', 'body', 'author', 'mainIMage', 'categories', 'relatedPosts']
         // include: ['title']
-        exclude: ['body']
+        // exclude: ['body']
       }
       const transResult = await translateAgentAction(
           props.docId,
